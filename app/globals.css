@@ -1,26 +1,70 @@
 @import "tailwindcss";
+/* @import "tw-animate-css"; */
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@custom-variant dark (&:is(.dark *));
+
+@layer base {
+  :root {
+    --font-lexend: 'Lexend', sans-serif;
+    --font-cal: 'CalSans', sans-serif;
+    --font-inter: 'Inter', sans-serif;
+    --font-mono: 'Roboto Mono', monospace;
+
+    /* Light Theme - OKLCH Colors */
+    --background: oklch(1 0 0);               /* Pure white */
+    --foreground: oklch(0.17 0 0);            /* Near black text */
+
+    --primary: oklch(0.22 0.05 265);          /* Deep Midnight Blue */
+    --secondary: oklch(0.28 0.05 265);        /* Charcoal Slate */
+    --accent: oklch(0.85 0.2 145);            /* M-Pesa Green */
+    --accent-alt: oklch(0.85 0.17 220);       /* Sky Blue */
+    --surface: oklch(0.35 0.03 265);          /* Steel Gray */
+    --muted: oklch(0.95 0.01 265);            /* Very light gray */
+
+    --text-primary: oklch(0.17 0 0);
+    --text-secondary: oklch(0.5 0.01 265);
+    --success: oklch(0.75 0.15 135);
+    --error: oklch(0.75 0.2 30);
+
+    --font-sans: var(--font-lexend), var(--font-inter), sans-serif;
+    --font-heading: var(--font-cal), var(--font-lexend), var(--font-inter), sans-serif;
+    --font-mono: var(--font-mono);
+  }
+}
+
+.dark {
+  :root {
+    --background: oklch(0.14 0.01 265);          /* Dark Midnight Blue */
+    --foreground: oklch(0.97 0.01 265);          /* Almost white */
+
+    --primary: oklch(0.14 0.01 265);             /* Same dark primary */
+    --secondary: oklch(0.2 0.015 265);           /* Slightly lighter for elements */
+    --accent: oklch(0.85 0.2 145);               /* M-Pesa Green */
+    --accent-alt: oklch(0.85 0.17 220);          /* Sky Blue */
+    --surface: oklch(0.25 0.01 265);             /* Steel Gray */
+    --muted: oklch(0.18 0.01 265);
+
+    --text-primary: oklch(0.97 0 265);
+    --text-secondary: oklch(0.7 0.01 265);
+    --success: oklch(0.75 0.15 135);
+    --error: oklch(0.75 0.2 30);
+  }
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-secondary: var(--secondary);
+  --color-primary: var(--primary);
+  --color-accent: var(--accent);
+  --color-surface: var(--surface);
+  --color-secondary-foreground: var(--text-secondary);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --font-cal: var(--font-heading);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
 }

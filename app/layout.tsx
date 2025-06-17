@@ -1,15 +1,28 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const lexendFont = localFont({
+  src: [
+    {
+      path: "./fonts/Lexend/Lexend-Regular.ttf",
+      weight: "400",
+    },
+    {
+      path: "./fonts/Lexend/Lexend-Bold.ttf",
+      weight: "700",
+    },
+  ],
+  variable: "--font-lexend",
+  preload: true,
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const calFont = localFont({
+  src: "./fonts/CalSans/CalSans-SemiBold.woff2",
+  variable: "--font-cal",
+  preload: true,
+  display: "block",
+  weight: "600",
 });
 
 export const metadata: Metadata = {
@@ -23,12 +36,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+    <html lang="en" className={`${lexendFont.variable} ${calFont.variable}`}>
+      <body className="font-sans antialiased">{children}</body>
     </html>
   );
 }
