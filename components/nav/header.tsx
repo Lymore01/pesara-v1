@@ -21,7 +21,7 @@ export const Header = () => {
 
   return (
     <header className="fixed top-0 w-full z-50 backdrop-blur-lg bg-white/70 dark:bg-background/70 border-b border-border shadow-sm">
-      <nav className="max-w-7xl mx-auto w-[80%] px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+      <nav className="max-w-7xl mx-auto w-[80%] px-4 sm:px-6 lg:px-8 flex items-center justify-between h-12">
         <Link href="/" className="flex items-center gap-2 group">
           <div className="rounded-full p-1 bg-foreground group-hover:rotate-12 transition">
             <DollarSign size={18} className="text-black font-semibold" />
