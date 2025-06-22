@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Sidebar } from "lucide-react";
+import { Icon, Sidebar } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -13,57 +13,85 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import { navItems } from "../../lib/constants";
+import { navSections } from "../../lib/constants";
 import { useSidebarMode } from "./sidebar-context";
+import { NavSection } from "../../lib/types";
 
 export default function DashboardSideNav() {
-  const { mode, setMode } = useSidebarMode();
+  const { mode } = useSidebarMode();
   const pathname = usePathname();
 
   const sidebarClass = cn(
     "group fixed left-0 top-12 z-30 h-[calc(100vh-3rem)] bg-white/70 dark:bg-background/70 backdrop-blur-lg border-r border-border shadow-sm hidden md:flex flex-col justify-between px-2 py-6 overflow-hidden transition-all duration-300 ease-in-out",
-    mode === "collapsed" && "w-[60px] hover:w-[60px]",
-    mode === "expanded" && "w-[220px] hover:w-[220px]",
+    mode === "collapsed" && "w-[60px]",
+    mode === "expanded" && "w-[220px]",
     mode === "hover" && "w-[60px] hover:w-[220px]"
   );
 
   return (
-    <>
-      <aside className={sidebarClass}>
-        <div className="space-y-2">
-          {navItems.map(({ name, icon: Icon, href }) => {
-            const isActive = pathname === href;
-            return (
-              <Link
-                key={name}
-                href={href}
-                className={cn(
-                  "flex items-center gap-4 px-3 py-2 rounded-md transition-colors",
-                  isActive
-                    ? "bg-muted text-primary"
-                    : "text-muted-foreground hover:text-foreground hover:bg-accent"
-                )}
-              >
-                <Icon size={20} className="shrink-0" />
-                <span
-                  className={cn(
-                    "whitespace-nowrap transition-opacity duration-300 text-sm",
-                    mode === "collapsed"
-                      ? "opacity-0"
-                      : mode === "expanded"
-                        ? "opacity-100"
-                        : "opacity-0 group-hover:opacity-100"
-                  )}
-                >
-                  {name}
-                </span>
-              </Link>
-            );
-          })}
-        </div>
-        <SideBarToggle />
-      </aside>
-    </>
+    <aside className={sidebarClass}>
+      <div className="space-y-6">
+        {navSections.map((section) => (
+          <OptionGroup key={section.label} section={section} mode={mode} pathname={pathname} />
+        ))}
+      </div>
+      <SideBarToggle />
+    </aside>
+  );
+}
+
+function OptionGroup({
+  section,
+  mode,
+  pathname,
+}: {
+  section: NavSection;
+  mode: string;
+  pathname: string;
+}) {
+  return (
+    <div className="space-y-1 border-b border-border pb-4">
+      <p
+        className={cn(
+          "text-xs text-muted-foreground mb-2 px-3 uppercase tracking-widest transition-opacity duration-300",
+          mode === "collapsed" && "opacity-0 hidden",
+          mode === "expanded" && "opacity-100",
+          mode === "hover" && "opacity-0 hidden group-hover:opacity-100 group-hover:block"
+        )}
+      >
+        {section.label}
+      </p>
+      {section.items.map((item) => {
+        const isActive = pathname === item.href;
+
+        return (
+          <Link
+            key={item.name}
+            href={item.href}
+            className={cn(
+              "flex items-center gap-4 px-3 py-2 rounded-md transition-colors",
+              isActive
+                ? "bg-muted text-primary"
+                : "text-muted-foreground hover:text-foreground hover:bg-accent"
+            )}
+          >
+            <item.icon size={20} className="shrink-0" />
+            <span
+              className={cn(
+                "whitespace-nowrap transition-opacity duration-300 text-sm",
+                mode === "collapsed"
+                  ? "opacity-0"
+                  : mode === "expanded"
+                    ? "opacity-100"
+                    : "opacity-0 group-hover:opacity-100"
+              )}
+            >
+              {item.name}
+            </span>
+          </Link>
+        );
+      })}
+    </div>
   );
 }
 

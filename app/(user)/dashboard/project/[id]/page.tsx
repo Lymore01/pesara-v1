@@ -1,7 +1,11 @@
 import { Metadata } from "next";
-import { Terminal, KeyRound, BarChart2, FileText } from "lucide-react";
-import Link from "next/link";
+import Success from "@/features/dashboard/components/success-screen";
+import { stats } from "@/features/dashboard/lib/constants";
+import { StatsCard } from "@/features/dashboard/lib/types";
 import { cn } from "@/lib/utils";
+import { formatMoney } from "@/features/dashboard/lib/utils";
+import { Separator } from "@/components/ui/separator";
+import PaymentLogs from "@/features/dashboard/components/tables/payments/page";
 
 type Props = {
   params: { id: string };
@@ -16,95 +20,44 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default function Project({ params }: Props) {
-  const projectName = decodeURI(params.id);
-
   return (
-    <div className="max-w-3xl mx-auto py-14 px-0 md:px-6 space-y-10">
-      <div className="space-y-4 text-center">
-        <h1 className="text-3xl font-semibold">
-          🎉 Project Created: <span className="text-primary">{projectName}</span>
-        </h1>
-        <p className="text-muted-foreground max-w-xl mx-auto text-sm leading-relaxed">
-          Welcome to Pesara – your one-stop solution for integrating mobile money payments with
-          M-PESA & Airtel Money. Use this dashboard to monitor activity, configure APIs, and start
-          accepting payments with ease.
-        </p>
-      </div>
-
-      <div className="bg-card rounded-xl p-6 shadow-md">
-        <h2 className="font-semibold text-lg mb-4">🚀 Quick Start</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-          <QuickStep
-            icon={KeyRound}
-            title="Generate API Keys"
-            description="Create secure keys for backend integration."
-          />
-          <QuickStep
-            icon={Terminal}
-            title="Hosted Checkout"
-            description="Use our pre-built checkout to start collecting money instantly."
-          />
-          <QuickStep
-            icon={BarChart2}
-            title="Track Transactions"
-            description="View your payment history and get real-time analytics."
-          />
-          <QuickStep
-            icon={FileText}
-            title="Read the Docs"
-            description={
-              <Link
-                href="https://pesara.dev/docs"
-                target="_blank"
-                className="underline text-blue-500"
-              >
-                View developer documentation
-              </Link>
-            }
-          />
-        </div>
-      </div>
-
-      <div className="bg-muted rounded-lg p-4 text-xs text-muted-foreground">
-        💡{" "}
-        <span>
-          Want to personalize your project? Head to the <strong>Settings</strong> tab to upload a
-          logo, add payment provider, manage team access, and configure webhooks.
-        </span>
-      </div>
-
-      <div className="flex justify-center">
-        <Link
-          href={`/dashboard/${projectName}/settings`}
-          className={cn(
-            "px-6 py-3 text-sm rounded-md font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition"
-          )}
-        >
-          Go to Project Settings
-        </Link>
-      </div>
+    // display on configured projects only
+    // <Success params={params} />
+    <div className="min-h-screen space-y-8">
+      <HeaderSection projectName={params.id} />
+      <Separator />
+      <PaymentLogs />
     </div>
   );
 }
 
-function QuickStep({
-  icon: Icon,
-  title,
-  description,
-}: {
-  icon: React.ElementType;
-  title: string;
-  description: React.ReactNode;
-}) {
+const HeaderSection = ({ projectName }: { projectName: string }) => {
   return (
-    <div className="flex items-start gap-3">
-      <div className="bg-accent p-2 rounded-md text-primary">
-        <Icon size={18} />
-      </div>
-      <div className="space-y-0.5">
-        <h3 className="font-medium">{title}</h3>
-        <p className="text-muted-foreground text-xs">{description}</p>
+    <div className="w-full flex items-center justify-between">
+      <h1 className="text-2xl">{projectName}</h1>
+      <div className="flex gap-2 items-center">
+        {stats.map((stat: StatsCard) => (
+          <StatusCard key={stat.id} stat={stat} />
+        ))}
       </div>
     </div>
   );
-}
+};
+
+const StatusCard = ({ stat }: { stat: StatsCard }) => {
+  return (
+    <div
+      className={cn(
+        "rounded-sm border bg-card text-card-foreground shadow-sm p-4 flex flex-col gap-2 cursor-pointer hover:bg-accent transition-colors group relative",
+        stat.title === "Total Revenue" && "bg-brand hover:bg-brand-accent"
+      )}
+    >
+      <h1 className="text-sm text-muted-foreground">{stat.title}</h1>
+      <p
+        className={cn("font-semibold text-xl", stat.title === "Failed Payments" && stat.classNames)}
+      >
+        {stat.title === "Total Revenue" ? <span>ksh. {formatMoney(stat.value)}</span> : stat.value}
+      </p>
+    </div>
+  );
+};

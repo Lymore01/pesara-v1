@@ -10,7 +10,7 @@ export default function DashSubLayout({ children }: { children: React.ReactNode 
   return (
     <section
       className={cn(
-        "max-h-screen h-[calc(100vh-3rem)] mt-24 md:mt-12 py-8 px-8 md:px-16 transition-all duration-300 ease-in-out",
+        "mt-24 md:mt-12 py-8 px-8 md:px-16 transition-all duration-300 ease-in-out",
         marginLeft
       )}
     >

@@ -42,7 +42,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${lexendFont.variable} ${calFont.variable} font-sans antialiased`}
     >
-      <body className="flex flex-col">
+      <body className="flex flex-col overflow-x-hidden">
         <Providers>{children}</Providers>
       </body>
     </html>
