@@ -1,4 +1,4 @@
-import ProjectSettings from "@/features/dashboard/components/forms/project-settings";
+import Credentials from "@/features/dashboard/components/credentials";
 import ConfigLayout from "@/features/dashboard/layouts/config-layout";
 import { Metadata } from "next";
 
@@ -14,10 +14,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function Settings({ params }: Props) {
+export default function ApiKey({ params }: Props) {
   return (
-    <ConfigLayout title={`Configure ${params.id}'s settings`}>
-      <ProjectSettings />
+    <ConfigLayout title={`${params.id}'s Api Credentials`}>
+      <Credentials />
     </ConfigLayout>
   );
 }

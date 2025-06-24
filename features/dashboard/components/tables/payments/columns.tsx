@@ -1,5 +1,6 @@
 "use client";
 
+import Tag from "@/components/tag";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 
@@ -14,9 +15,22 @@ export type Payment = {
 
 export const columns: ColumnDef<Payment>[] = [
   {
+    accessorKey: "id",
+    header: "Transaction ID",
+    cell: ({ row }) => (
+      <span className="font-mono text-xs bg-muted px-2 py-1 rounded select-all">
+        {row.getValue("id")}
+      </span>
+    ),
+  },
+  {
     accessorKey: "phone",
     header: "Customer Phone",
-    cell: ({ row }) => <div className="font-mono">{row.getValue("phone")}</div>,
+    cell: ({ row }) => {
+      const phone = row.getValue("phone");
+
+      return <div className="font-mono">{String(phone)}</div>;
+    },
   },
   {
     accessorKey: "amount",
@@ -24,7 +38,15 @@ export const columns: ColumnDef<Payment>[] = [
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("amount"));
       const formatted = new Intl.NumberFormat("en-KE").format(amount);
-      return <div className="text-right font-medium">Ksh. {formatted}</div>;
+      const status = row.getValue("status");
+      let color = "text-orange-500";
+      if (status === "success") color = "text-green-600";
+      if (status === "failed") color = "text-red-600";
+      return (
+        <div className="flex items-start">
+          <div className={`text-right font-semibold ${color}`}>Ksh. {formatted}</div>
+        </div>
+      );
     },
   },
   {
@@ -32,11 +54,15 @@ export const columns: ColumnDef<Payment>[] = [
     header: "Status",
     cell: ({ row }) => {
       const status = row.getValue("status");
-      let color = "text-yellow-600";
-      if (status === "success") color = "text-emerald-600";
-      if (status === "failed") color = "text-red-600";
+
       return (
-        <span className={`capitalize font-semibold ${color}`}>{status as Payment["status"]}</span>
+        <div className="flex items-start">
+          <Tag
+            variant={status === "failed" ? "error" : status === "pending" ? "warning" : "default"}
+          >
+            {String(status)}
+          </Tag>
+        </div>
       );
     },
   },
@@ -44,21 +70,29 @@ export const columns: ColumnDef<Payment>[] = [
     accessorKey: "method",
     header: "Method",
     cell: ({ row }) => (
-      <span className="capitalize">{row.getValue("method") === "mpesa" ? "M-PESA" : "Airtel"}</span>
+      <span className="capitalize flex items-center gap-1">
+        {row.getValue("method") === "mpesa" ? (
+          <img src="/images/mpesa.png" alt="M-PESA" className="w-12 h-8 inline" />
+        ) : (
+          <img src="/images/airtel.png" alt="Airtel" className="w-12 h-8 inline" />
+        )}
+      </span>
     ),
   },
   {
     accessorKey: "timestamp",
     header: "Timestamp",
-    cell: ({ row }) => <span className="font-mono text-xs">{row.getValue("timestamp")}</span>,
+    cell: ({ row }) => (
+      <span className="font-mono text-xs text-muted-foreground">{row.getValue("timestamp")}</span>
+    ),
   },
   {
     id: "details",
-    header: "Details",
+    header: "",
     cell: ({ row }) => (
       <Link
         href={`/dashboard/transactions/${row.original.id}`}
-        className="text-blue-600 underline text-xs"
+        className="text-blue-600 underline text-xs font-medium hover:text-brand-accent transition-colors"
       >
         View
       </Link>

@@ -43,6 +43,14 @@ export default async function PaymentLogs() {
       method: "mpesa",
       timestamp: "2024-06-19 14:20:00",
     },
+    {
+      id: "txn5",
+      phone: "254722334455",
+      amount: 1200,
+      status: "success",
+      method: "mpesa",
+      timestamp: "2024-06-19 14:20:00",
+    },
   ];
 
   return (

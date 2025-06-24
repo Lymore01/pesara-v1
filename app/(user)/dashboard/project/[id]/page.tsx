@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { formatMoney } from "@/features/dashboard/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import PaymentLogs from "@/features/dashboard/components/tables/payments/page";
+import { ProjectContextSetter } from "@/features/dashboard/components/project-context-setter";
 
 type Props = {
   params: { id: string };
@@ -24,6 +25,7 @@ export default function Project({ params }: Props) {
     // display on configured projects only
     // <Success params={params} />
     <div className="min-h-screen space-y-8">
+      <ProjectContextSetter project={params.id} />
       <HeaderSection projectName={params.id} />
       <Separator />
       <PaymentLogs />

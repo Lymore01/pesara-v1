@@ -1,10 +1,10 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useSidebarMode } from "./Nav/sidebar-context";
+import { useSidebar } from "./Nav/sidebar-context";
 
 export default function DashSubLayout({ children }: { children: React.ReactNode }) {
-  const { mode } = useSidebarMode();
+  const { mode } = useSidebar();
 
   const marginLeft = mode === "expanded" ? "md:ml-[220px]" : "md:ml-16";
   return (

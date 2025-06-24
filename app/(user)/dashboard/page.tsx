@@ -2,6 +2,7 @@
 
 import { Input } from "@/components/ui/input";
 import { NewProject } from "@/features/dashboard/components/forms/new-project";
+import { useSidebar } from "@/features/dashboard/components/Nav/sidebar-context";
 import { projects } from "@/features/dashboard/lib/constants";
 import { ArrowRightIcon, Search } from "lucide-react";
 import Link from "next/link";

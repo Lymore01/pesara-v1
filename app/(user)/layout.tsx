@@ -2,6 +2,7 @@ import DashSubLayout from "@/features/dashboard/components/dash-sub-layout";
 import DashboardSideNav from "@/features/dashboard/components/Nav/side-nav";
 import { SidebarModeProvider } from "@/features/dashboard/components/Nav/sidebar-context";
 import DashboardTopNav from "@/features/dashboard/components/Nav/top-nav";
+import { ProjectContextResetter } from "@/features/dashboard/components/project-context-resetter";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -20,7 +21,10 @@ export default function DashboardLayout({
         {/* top nav */}
         <DashboardTopNav />
         <DashboardSideNav />
-        <DashSubLayout>{children}</DashSubLayout>
+        <DashSubLayout>
+          <ProjectContextResetter />
+          {children}
+        </DashSubLayout>
       </main>
     </SidebarModeProvider>
   );

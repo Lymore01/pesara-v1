@@ -8,7 +8,7 @@
     --font-lexend: "Lexend", sans-serif;
     --font-cal: "CalSans", sans-serif;
     --font-inter: "Inter", sans-serif;
-    --font-mono: "Roboto Mono", monospace;
+    /* --font-mono: "Roboto Mono", monospace; */
 
     --radius: 0.625rem;
     --brand: oklch(0.232 0.045 147);
@@ -47,7 +47,7 @@
 
     --font-sans: var(--font-lexend), var(--font-inter), sans-serif;
     --font-heading: var(--font-cal), var(--font-lexend), var(--font-inter), sans-serif;
-    --font-mono: var(--font-mono);
+    --font-mono: "Roboto Mono", monospace;
   }
 }
 

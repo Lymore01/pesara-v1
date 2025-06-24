@@ -14,11 +14,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { navSections } from "../../lib/constants";
-import { useSidebarMode } from "./sidebar-context";
+import { useSidebar } from "./sidebar-context";
 import { NavSection } from "../../lib/types";
 
 export default function DashboardSideNav() {
-  const { mode } = useSidebarMode();
+  const { mode } = useSidebar();
   const pathname = usePathname();
 
   const sidebarClass = cn(
@@ -63,17 +63,26 @@ function OptionGroup({
       </p>
       {section.items.map((item) => {
         const isActive = pathname === item.href;
+        const { project } = useSidebar();
+
+        const globalScope = ["Overview", "Account Settings", "Billing"];
 
         return (
           <Link
             key={item.name}
-            href={item.href}
+            href={`${item.href}/${globalScope.includes(item.name) ? "" : project}`}
             className={cn(
               "flex items-center gap-4 px-3 py-2 rounded-md transition-colors",
+              project
+                ? "flex"
+                : section.label === "Account" || item.name === "Overview"
+                  ? "flex"
+                  : "hidden",
               isActive
                 ? "bg-muted text-primary"
                 : "text-muted-foreground hover:text-foreground hover:bg-accent"
             )}
+            aria-current={isActive ? "page" : undefined}
           >
             <item.icon size={20} className="shrink-0" />
             <span
@@ -96,7 +105,7 @@ function OptionGroup({
 }
 
 const SideBarToggle = () => {
-  const { mode, setMode } = useSidebarMode();
+  const { mode, setMode } = useSidebar();
 
   return (
     <DropdownMenu>
