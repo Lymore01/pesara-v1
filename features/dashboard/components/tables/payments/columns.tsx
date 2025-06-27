@@ -59,6 +59,7 @@ export const columns: ColumnDef<Payment>[] = [
         <div className="flex items-start">
           <Tag
             variant={status === "failed" ? "error" : status === "pending" ? "warning" : "default"}
+            className="mx-0"
           >
             {String(status)}
           </Tag>

@@ -1,5 +1,6 @@
 import ProjectSettings from "@/features/dashboard/components/forms/project-settings";
 import ConfigLayout from "@/features/dashboard/layouts/config-layout";
+import { CheckoutProvider } from "@/providers/checkout-provider";
 import { Metadata } from "next";
 
 type Props = {
@@ -17,7 +18,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default function Settings({ params }: Props) {
   return (
     <ConfigLayout title={`Configure ${params.id}'s settings`}>
-      <ProjectSettings />
+      <CheckoutProvider>
+        <ProjectSettings />
+      </CheckoutProvider>
     </ConfigLayout>
   );
 }

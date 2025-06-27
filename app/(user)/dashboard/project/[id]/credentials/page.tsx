@@ -9,15 +9,15 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const projectName = params.id;
   return {
-    title: `${decodeURI(projectName)} | Settings | Pesara`,
-    description: `Manage and configure your ${projectName} project settings in Pesara.`,
+    title: `${decodeURI(projectName)} | Credentials | Pesara`,
+    description: `Manage and configure your ${projectName} project api credentials.`,
   };
 }
 
 export default function ApiKey({ params }: Props) {
   return (
     <ConfigLayout title={`${params.id}'s Api Credentials`}>
-      <Credentials />
+      <Credentials projectName={params.id} />
     </ConfigLayout>
   );
 }

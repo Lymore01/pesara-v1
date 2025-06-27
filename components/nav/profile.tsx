@@ -11,10 +11,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LogOut, Settings, User } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { getProjectName } from "@/features/dashboard/components/get-project-name";
+import { useSidebar } from "@/features/dashboard/components/Nav/sidebar-context";
 
 export const Profile = () => {
   const { data: session } = useSession();
-
+  const { project } = useSidebar();
   const user = session?.user;
 
   return (
@@ -49,7 +52,7 @@ export const Profile = () => {
 
         <DropdownMenuItem asChild>
           <Link
-            href="/settings"
+            href={`/dashboard/project/${project}/settings`}
             className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors rounded-sm"
           >
             <Settings size={14} /> Settings

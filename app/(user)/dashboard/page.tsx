@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { NewProject } from "@/features/dashboard/components/forms/new-project";
 import { useSidebar } from "@/features/dashboard/components/Nav/sidebar-context";
 import { projects } from "@/features/dashboard/lib/constants";
+import { getInitials } from "@/lib/utils";
 import { ArrowRightIcon, Search } from "lucide-react";
 import Link from "next/link";
 
@@ -56,12 +57,7 @@ export const ProjectsSection = () => {
 };
 
 export const ProjectCard = ({ project }: { project: any }) => {
-  const initials = project.name
-    .split(" ")
-    .map((w: string) => w[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
+  const initials = getInitials(project.name);
 
   return (
     <Link

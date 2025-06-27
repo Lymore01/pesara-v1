@@ -5,8 +5,10 @@ import { PaymentProviders } from "../lib/types";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
+import { useCheckout } from "@/providers/checkout-provider";
 
 export default function PaymentMethod() {
+  const { values } = useCheckout();
   const [picked, setPicked] = useState<PaymentProviders[]>(["mpesa"]);
 
   const toggleProvider = (provider: PaymentProviders) => {
@@ -21,22 +23,34 @@ export default function PaymentMethod() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-      <PaymentChoice
-        alt="mpesa logo"
-        image="/images/mpesa.png"
-        isPicked={isPicked}
-        provider="mpesa"
-        toggleProvider={toggleProvider}
-        key={"mpesa"}
-      />
-      <PaymentChoice
-        alt="airtel logo"
-        image="/images/airtel.png"
-        isPicked={isPicked}
-        provider="airtel"
-        toggleProvider={toggleProvider}
-        key={"airtel"}
-      />
+      {values.paymentMethods?.length ? (
+        <>
+          {values.paymentMethods.includes("mpesa") && (
+            <PaymentChoice
+              alt="mpesa logo"
+              image="/images/mpesa.png"
+              isPicked={isPicked}
+              provider="mpesa"
+              toggleProvider={toggleProvider}
+              key={"mpesa"}
+            />
+          )}
+          {values.paymentMethods.includes("airtel") && (
+            <PaymentChoice
+              alt="airtel logo"
+              image="/images/airtel.png"
+              isPicked={isPicked}
+              provider="airtel"
+              toggleProvider={toggleProvider}
+              key={"airtel"}
+            />
+          )}
+        </>
+      ) : (
+        <div className="col-span-2 text-sm text-center text-red-500">
+          No payment methods available. Please configure your project settings.
+        </div>
+      )}
     </div>
   );
 }
